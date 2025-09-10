@@ -1,16 +1,17 @@
 import socket
 
-server = socket.socket(socker.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTRPROTO_RFCOMM)
-client.connect((MAC_ADRESS, 4))
-
+MAC_ADRESS = "7C:70:DB:59:B6:17"
+client = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
+client.connect(("7C:70:DB:59:B6:17", 4))
+print("connected")
 try:
 	while True:
-		client.send(Input("message to send :"))	
+		client.send(input("message to send :").encode('utf-8'))	
 		data = client.recv(1024)
-		if not date:
+		if not data:
 			break
 		print(data.decode('utf-8'))
-except OSRrror as se:
+except OSError as se:
 	pass
 
 client.close()
