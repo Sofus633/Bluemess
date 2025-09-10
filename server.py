@@ -1,19 +1,59 @@
 import socket
+import threading
 
-server = socket.socket(socker.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTRPROTO_RFCOMM)
-server.bind((MAC_ADRESS, 4))
+ 
+RUNNING = True
 
+server = socket.socket(socket.AF_BLUETOOTH,
+socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
+server.bind(("50:84:92:E6:14:B8", 4))
+server.listen(1)
 client, addr = server.accept()
+print("server accepted")
 
+
+def send_message(message, client):
+	client.send(message.encode('utf-8'))
+
+
+def display_newmessage(client):
+    global RUNNING
+    while (RUNNING):
+        data = client.recv(1024)
+        if not data:
+            break
+        print(data.decode('utf-8'))
+
+
+def send_newmessage(client):
+ global RUNNING
+ while (RUNNING):
+      message = input("message to send :")
+      if message == "/stop":
+           RUNNING = False
+           break
+      send_message(message, client)
+
+
+"""try:
+    while True:
+        data = client.recv(1024)
+        if not data:
+            break
+        print(data.decode('utf-8'))
+        send_message(input("message to send :"), client)
+except OSError as se:
+    pass
+"""
 try:
-	while True:
-		data = client.recv(1024)
-		if not date:
-			break
-		print(data.decode('utf-8'))
-		client.send(Input("message to send :"))
-except OSRrror as se:
-	pass
+	t1 = threading.Thread(target=display_newmessage, args=(client,))   
+	t2 = threading.Thread(target=send_newmessage, args=(client,))
+	t1.start()
+	t2.start()
+	t1.join()
+	t2.join()
+except OSError as se:
+    pass
 
 client.close()
 server.close()
