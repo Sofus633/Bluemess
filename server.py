@@ -1,8 +1,10 @@
 import socket
 import threading
-
+import bluetooth
 
 RUNNING = True
+
+ppls = []
 
 server = socket.socket(socket.AF_BLUETOOTH,
 socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
@@ -30,6 +32,12 @@ def display_newmessage(client):
         print(data.decode('utf-8'))
         print("enter ur message :", flush=True, end="")
 
+"""def try_connect"""
+
+"""def scan_bluetooth():
+    new_devices = bluetooth.discover_devices(duration=8,lookup_names=True, lookup_class=True)
+    for addr, name, device_class in device 
+"""
 
 def send_newmessage(client):
     global RUNNING
