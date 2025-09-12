@@ -1,55 +1,19 @@
 import socket
 import threading
-import bluetooth
+#import bluetooth
+import time
+import bluefunc
 
 RUNNING = True
+CANAL = 4
+#ppls = []
 
-ppls = []
-
-server = socket.socket(socket.AF_BLUETOOTH,
-socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
-server.bind(("50:84:92:E6:14:B8", 4))
+server = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
+server.bind(("50:84:92:E6:14:B8", CANAL))
 server.listen(1)
 client, addr = server.accept()
-print("server accepted")
 
-
-def send_message(message, client):
-    client.send(message.encode('utf-8'))
-
-
-def erase_line():
-    print("\033[F\033[2K", end="")
-
-
-def display_newmessage(client):
-    global RUNNING
-    while (RUNNING):
-        data = client.recv(1024)
-        if not data:
-            break
-        erase_line()
-        print(data.decode('utf-8'))
-        print("enter ur message :", flush=True, end="")
-
-"""def try_connect"""
-
-"""def scan_bluetooth():
-    new_devices = bluetooth.discover_devices(duration=8,lookup_names=True, lookup_class=True)
-    for addr, name, device_class in device 
-"""
-
-def send_newmessage(client):
-    global RUNNING
-    while (RUNNING):
-        message = input("")
-        if message == "/stop":
-            RUNNING = False
-            break
-        send_message(message, client)
-        erase_line()
-        print(message)
-        print("enter ur message :", flush=True, end="")
+print("connected")
 
 
 """try:
@@ -62,6 +26,15 @@ def send_newmessage(client):
 except OSError as se:
     pass
 """
+"""
+macth = "7C:70:DB:5A:79:6C"
+maccla = "50:84:92:E6:14:B8"
+client = try_connect()"""
+print("server accepted")
+
+
+
+
 try:
     t1 = threading.Thread(target=display_newmessage, args=(client,))
     t2 = threading.Thread(target=send_newmessage, args=(client,))
